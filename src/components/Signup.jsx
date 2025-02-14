@@ -5,7 +5,9 @@ export default function Signup() {
 
         const formData = new FormData(event.target)
 
+        const channel = formData.getAll("acquisition")
         const data = Object.fromEntries(formData.entries())
+        data.acquisition = channel
     }
 
     return (
