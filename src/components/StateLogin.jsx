@@ -1,15 +1,10 @@
 import { useState } from 'react'
-export default function StateLogin() {
-  const [enteredValues, setEnteredValues] = useState({
-    email: '',
-    password: ''})
+import { useInput } from '../hooks/useInpute'
 
-  function handleInputChange(identifier, value) {
-    setEnteredValues(prevValues => ({
-      ...prevValues,
-      [identifier]: value
-    }))
-  }
+export default function StateLogin() {
+  const {value: emailValue, 
+    handleInputBlur: handleEmailBlur, 
+    handleInputChange: handleEmailChange} = useInput('')
 
   function handleSubmit(event) {
      event.preventDefault()
@@ -31,8 +26,9 @@ export default function StateLogin() {
             id="email" 
             type="email" 
             name="email" 
-            onChange={(event) =>handleInputChange('email', event.target.value)} 
-            value={enteredValues.email} 
+            onBlur={handleEmailBlur}
+            onChange={handleEmailChange} 
+            value={emailValue} 
           />
         </div>
 
