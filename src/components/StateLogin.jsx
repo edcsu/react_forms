@@ -1,18 +1,26 @@
-import { useState } from 'react'
 import { useInput } from '../hooks/useInpute'
+
+import { isEmail, isNotEmpty, hasMinLength} from '../util/validation'
 
 export default function StateLogin() {
   const {value: emailValue, 
     handleInputBlur: handleEmailBlur, 
-    handleInputChange: handleEmailChange} = useInput('')
+    handleInputChange: handleEmailChange,
+    hasError: emailHasError} = useInput('', (value) => {
+      return isNotEmpty(value) && isEmail(value)
+    })
 
-  function handleSubmit(event) {
+  const {value: passwordValue,
+    handleInputBlur: handlePasswordBlur,
+    handleInputChange: handlePasswordChange,
+    hasError: passwordHasError} = useInput('', (value) => hasMinLength(value, 6))
+  
+    function handleSubmit(event) {
      event.preventDefault()
      
-     setEnteredValues({
-      email: '',
-      password: ''
-    })
+    if (emailHasError || passwordHasError) {
+      return
+    }
   }
 
   return (
@@ -38,8 +46,9 @@ export default function StateLogin() {
            id="password" 
            type="password" 
            name="password" 
-           onChange={(event) =>handleInputChange('password', event.target.value)} 
-           value={enteredValues.password} 
+           onBlur={handlePasswordBlur}
+           onChange={handlePasswordChange} 
+           value={passwordValue} 
           />
         </div>
       </div>

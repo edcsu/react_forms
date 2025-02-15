@@ -1,9 +1,11 @@
 import { useState} from 'react'
-export function useInput(defaultValue) {
+export function useInput(defaultValue, validationFx) {
     const [enteredValue, setEnteredValue] = useState(defaultValue)
 
     const [didEdit, setDidEdit] = useState(false)
     
+    const valueIsValid = validationFx(enteredValue)
+
     function handleInputChange(event) {
         setEnteredValue(event.target.value)
         setDidEdit(true)
@@ -16,6 +18,7 @@ export function useInput(defaultValue) {
     return {
         value: enteredValue,
         handleInputBlur,
-        handleInputChange
+        handleInputChange,
+        hasError: didEdit && !valueIsValid
     }
 }
